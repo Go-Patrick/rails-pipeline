@@ -62,7 +62,7 @@ jobs:
 
     - name: Build docker image
       run: | 
-        docker build -t rals .
+        docker build -t rails .
         docker tag rails ${{ secrets.ECR_URL }}:latest
 
     - name: Build, tag, and push image to Amazon ECR
