@@ -1,0 +1,28 @@
+name: "Rails CD"
+
+on:
+  workflow_run:
+    workflows: ["Rails CI"]
+    types: 
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip Dockerrun.aws.json .ebextensions
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: rails-app-dev  # replace with your application name
+          environment_name: dev-beanstalk-env  # replace with your environment name
+          version_label: latest  # replace with your version label
+          region: ap-southeast-1  # replace with your AWS region
+          deployment_package: deploy.zip
