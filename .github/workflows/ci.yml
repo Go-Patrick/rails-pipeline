@@ -25,8 +25,8 @@ jobs:
           bundler-cache: true
           
       # Add or replace database setup steps here
-      - name: Set up database schema
-        run: bin/rails db:migrate
+      # - name: Set up database schema
+      #   run: bin/rails db:migrate
         
       # Add or replace test runners here
       - name: Run tests
@@ -34,6 +34,7 @@ jobs:
 
   build-image:
     name: Build Image
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
@@ -50,5 +51,5 @@ jobs:
 
     - name: Build, tag, and push image to Amazon ECR
       run: |
-        docker build -t ${{secrets.ECR_URL}}
+        docker build -t ${{ secrets.ECR_URL }}
         docker push ${{secrets.ECR_URL}}
