@@ -56,5 +56,5 @@ jobs:
 
     - name: Build, tag, and push image to Amazon ECR
       run: |
-        docker build -t ${{ secrets.ECR_URL }}:latest
+        docker build -t ${{ secrets.ECR_URL }}:latest .
         docker push ${{ secrets.ECR_URL }}:latest
