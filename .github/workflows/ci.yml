@@ -54,9 +54,12 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    - name: Check Dockerfile
+      run:  ls -l Dockerfile
+
     - name: Build docker image
       run: | 
-        docker build . -t rals -f Dockerfile
+        docker build -t rals .
         docker tag rails ${{ secrets.ECR_URL }}:latest
 
     - name: Build, tag, and push image to Amazon ECR
